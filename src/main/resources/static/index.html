@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de email - Classificador Inteligente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <nav class="bg-blue-900 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-robot text-2xl"></i>
+                <span class="text-xl font-bold tracking-wide">Validador de email</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-10 flex-grow">
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                <h2 class="text-xl font-semibold mb-4 text-blue-900 border-b pb-2">
+                    <i class="fa-solid fa-envelope-open-text mr-2"></i>Entrada de Email
+                </h2>
+
+                <div class="flex mb-4 border-b">
+                    <button id="tab-text" onclick="switchTab('text')" class="px-4 py-2 text-blue-600 border-b-2 border-blue-600 font-medium transition-colors">Texto</button>
+                    <button id="tab-file" onclick="switchTab('file')" class="px-4 py-2 text-slate-500 hover:text-blue-600 transition-colors">Arquivo (PDF/TXT)</button>
+                </div>
+
+                <form id="analyzeForm" class="space-y-4">
+                    <div id="input-text-area">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Cole o conteúdo do email:</label>
+                        <textarea name="text" id="email_text" rows="8" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none bg-slate-50" placeholder="Ex: Prezado gerente, gostaria de saber o status da minha solicitação..."></textarea>
+                    </div>
+
+                    <div id="input-file-area" class="hidden">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Upload de arquivo:</label>
+                        <div class="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:bg-slate-50 transition cursor-pointer relative group">
+                            <input type="file" name="file" id="file" accept=".pdf,.txt" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                            <i class="fa-solid fa-cloud-arrow-up text-3xl text-slate-400 mb-2 group-hover:text-blue-500 transition-colors"></i>
+                            <p class="text-sm text-slate-500">Arraste ou clique para selecionar (.pdf ou .txt)</p>
+                            <p id="filename" class="text-blue-600 font-medium mt-2 text-sm h-5"></p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition shadow-md flex justify-center items-center group">
+                        <span id="btn-text">Processar Email</span>
+                        <i id="btn-spinner" class="fa-solid fa-circle-notch fa-spin ml-2 hidden"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="space-y-6">
+                <div id="result-placeholder" class="bg-white p-10 rounded-xl shadow-md border border-slate-200 text-center h-full flex flex-col justify-center items-center text-slate-400">
+                    <i class="fa-solid fa-wand-magic-sparkles text-4xl mb-3"></i>
+                    <p>Os resultados da análise aparecerão aqui.</p>
+                </div>
+
+                <div id="result-card" class="hidden bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200 animate-fade-in-up">
+                    <div id="status-header" class="p-4 flex justify-between items-center text-white bg-gray-500 transition-colors duration-500">
+                        <div class="font-bold text-lg uppercase tracking-wider" id="category-badge">...</div>
+                        <i id="category-icon" class="fa-solid fa-circle text-2xl"></i>
+                    </div>
+                    
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-400 uppercase">Resumo do Assunto</h3>
+                            <p id="summary-text" class="text-slate-800 font-medium leading-relaxed"></p>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase mb-2">Sugestão de Resposta Automática</h3>
+                            <div class="relative">
+                                <p id="response-text" class="text-slate-700 text-sm whitespace-pre-line font-mono bg-white p-2 rounded border border-slate-200"></p>
+                                <button onclick="copiarTexto()" class="absolute top-2 right-2 text-slate-400 hover:text-blue-600" title="Copiar resposta">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-100 py-6 text-center text-slate-500 text-sm">
+        <p>Desenvolvido para o Desafio AutoU &copy; 2026</p>
+    </footer>
+
+    <script>
+        function switchTab(tab) {
+            const textAreaDiv = document.getElementById('input-text-area');
+            const fileAreaDiv = document.getElementById('input-file-area');
+            const tabText = document.getElementById('tab-text');
+            const tabFile = document.getElementById('tab-file');
+            
+            if(tab === 'text') {
+                textAreaDiv.classList.remove('hidden');
+                fileAreaDiv.classList.add('hidden');
+                
+                tabText.className = "px-4 py-2 text-blue-600 border-b-2 border-blue-600 font-medium";
+                tabFile.className = "px-4 py-2 text-slate-500 hover:text-blue-600";
+                
+                document.getElementById('file').value = "";
+                document.getElementById('filename').innerText = "";
+
+            } else {
+                textAreaDiv.classList.add('hidden');
+                fileAreaDiv.classList.remove('hidden');
+                
+                tabText.className = "px-4 py-2 text-slate-500 hover:text-blue-600";
+                tabFile.className = "px-4 py-2 text-blue-600 border-b-2 border-blue-600 font-medium";
+                
+                document.getElementById('email_text').value = "";
+            }
+        }
+
+        document.getElementById('file').addEventListener('change', function(e) {
+            if(e.target.files[0]) {
+                document.getElementById('filename').innerText = e.target.files[0].name;
+            }
+        });
+
+        function copiarTexto() {
+            const texto = document.getElementById('response-text').innerText;
+            navigator.clipboard.writeText(texto).then(() => {
+                alert("Resposta copiada!");
+            });
+        }
+
+        document.getElementById('analyzeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            const btnText = document.getElementById('btn-text');
+            const btnSpinner = document.getElementById('btn-spinner');
+            btnText.innerText = "Processando...";
+            btnSpinner.classList.remove('hidden');
+            
+            try {
+                const response = await fetch('/api/analisar', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if(data.erro || data.error) {
+                    alert(data.erro || data.error);
+                    return;
+                }
+
+                document.getElementById('result-placeholder').classList.add('hidden');
+                document.getElementById('result-card').classList.remove('hidden');
+
+                const header = document.getElementById('status-header');
+                const badge = document.getElementById('category-badge');
+                const icon = document.getElementById('category-icon');
+
+                const classificacao = data.classificacao ? data.classificacao.toLowerCase() : "indefinido";
+
+                if (classificacao.includes('produtivo') && !classificacao.includes('improdutivo')) {
+                    header.className = "p-4 flex justify-between items-center text-white bg-green-600 transition-colors";
+                    badge.innerText = "PRODUTIVO";
+                    icon.className = "fa-solid fa-briefcase text-2xl";
+                } else if (classificacao.includes('improdutivo')) {
+                    header.className = "p-4 flex justify-between items-center text-white bg-amber-500 transition-colors";
+                    badge.innerText = "IMPRODUTIVO";
+                    icon.className = "fa-solid fa-mug-hot text-2xl";
+                } else {
+                    header.className = "p-4 flex justify-between items-center text-white bg-gray-500 transition-colors";
+                    badge.innerText = "INDEFINIDO";
+                    icon.className = "fa-solid fa-question-circle text-2xl";
+                }
+
+                document.getElementById('summary-text').innerText = data.resumo || "Sem resumo disponível.";
+                document.getElementById('response-text').innerText = data.resposta_sugerida || "Sem sugestão de resposta.";
+
+            } catch (error) {
+                console.error(error);
+                alert("Erro ao conectar com o servidor. Verifique se o Java está rodando na porta 8080.");
+            } finally {
+                btnText.innerText = "Processar Email";
+                btnSpinner.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
