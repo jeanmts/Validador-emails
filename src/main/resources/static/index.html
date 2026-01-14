@@ -39,7 +39,7 @@
 
                 <form id="analyzeForm" class="space-y-4">
                     <div id="input-text-area">
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Cole o conteúdo do email:</label>
+                        <label for="email_text" class="block text-sm font-medium text-slate-700 mb-1">Cole o conteúdo do email:</label>
                         <textarea name="text" id="email_text" rows="8" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none bg-slate-50" placeholder="Ex: Prezado gerente, gostaria de saber o status da minha solicitação..."></textarea>
                     </div>
 
@@ -92,11 +92,6 @@
             </div>
         </div>
     </main>
-
-    <footer class="bg-slate-100 py-6 text-center text-slate-500 text-sm">
-        <p>Desenvolvido para o Desafio AutoU &copy; 2026</p>
-    </footer>
-
     <script>
         function switchTab(tab) {
             const textAreaDiv = document.getElementById('input-text-area');

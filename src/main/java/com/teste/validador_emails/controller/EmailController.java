@@ -2,10 +2,12 @@ package com.teste.validador_emails.controller;
 
 import com.teste.validador_emails.service.FileService;
 import com.teste.validador_emails.service.GroqService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Map;
 
 @RestController
@@ -13,9 +15,9 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class EmailController {
 
-    private GroqService groqService;
+    private final GroqService groqService;
 
-    private FileService fileService;
+    private final FileService fileService;
 
     public EmailController(GroqService groqService, FileService fileService) {
         this.groqService = groqService;
@@ -45,7 +47,6 @@ public class EmailController {
             Map<String, String> resultado = groqService.analisarEmail(conteudoFinal);
 
             return ResponseEntity.ok(resultado);
-
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError()
