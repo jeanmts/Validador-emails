@@ -1,6 +1,6 @@
 # 📧 Validador de Email - Classificador Inteligente
 
-![Java](https://img.shields.io/badge/Java-17%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Java](https://img.shields.io/badge/Java-21%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.0-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
 ![Groq AI](https://img.shields.io/badge/AI-Llama_3.3-blueviolet?style=for-the-badge)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker&logoColor=white)
@@ -12,7 +12,7 @@
 
 ## 🚀 Live Demo
 Acesse a aplicação rodando em produção:
-👉 **[CLIQUE AQUI PARA ACESSAR (Render)](https://automail-SEU-NOME.onrender.com)**
+👉 **[CLIQUE AQUI PARA ACESSAR (Render)](https://validador-emails.onrender.com/)**
 
 *(Nota: Como o deploy é gratuito, pode levar cerca de 50 segundos para "acordar" na primeira requisição. Por favor, aguarde o carregamento).*
 
@@ -35,7 +35,7 @@ O **Validador de Email** resolve o problema de sobrecarga de caixas de entrada e
 ## 🛠️ Tecnologias Utilizadas
 
 ### Backend (Core)
-* **Java 17+ / Spring Boot 3:** API REST robusta e escalável.
+* **Java 21+ / Spring Boot 3:** API REST robusta e escalável.
 * **Apache PDFBox:** Para extração de texto de arquivos PDF binários.
 * **Jackson:** Processamento e validação de JSON.
 
@@ -58,7 +58,7 @@ O **Validador de Email** resolve o problema de sobrecarga de caixas de entrada e
 ## ⚙️ Como Rodar Localmente
 
 ### Pré-requisitos
-* Java JDK 17 ou superior.
+* Java JDK 21 ou superior.
 * Maven instalado.
 * Uma chave de API da [Groq Cloud](https://console.groq.com/) (Gratuita).
 
@@ -68,3 +68,4 @@ O **Validador de Email** resolve o problema de sobrecarga de caixas de entrada e
    ```bash
    git clone [https://github.com/jeanmts/Validador-emails.git](https://github.com/jeanmts/Validador-emails.git)
    cd Validador-emails
+
