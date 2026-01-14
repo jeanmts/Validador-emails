@@ -55,7 +55,7 @@ public class GroqService {
 
             messages.add(systemMessage);
 
-            body.put("temperature", 0.1);
+            body.put("temperature", 0.3);
 
 
             Map<String, String> userMessage = new HashMap<>();
