@@ -5,7 +5,7 @@
 ![Groq AI](https://img.shields.io/badge/AI-Llama_3.3-blueviolet?style=for-the-badge)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-> Solução desenvolvida para o Desafio Técnico AutoU.
+> Solução desenvolvida para o Desafio Técnico.
 > Uma aplicação web que utiliza Inteligência Artificial Generativa para ler, interpretar e classificar emails corporativos, sugerindo respostas automáticas e aumentando a produtividade operacional.
 
 ---
@@ -68,4 +68,5 @@ O **Validador de Email** resolve o problema de sobrecarga de caixas de entrada e
    ```bash
    git clone [https://github.com/jeanmts/Validador-emails.git](https://github.com/jeanmts/Validador-emails.git)
    cd Validador-emails
+
 
