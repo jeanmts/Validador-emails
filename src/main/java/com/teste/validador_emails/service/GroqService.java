@@ -43,7 +43,7 @@ public class GroqService {
                 1. 'Produtivo': APENAS se o email exigir uma ação técnica, suporte, dúvida, erro ou solicitação de status.
                 2. 'Improdutivo': Se for apenas agradecimento, elogio, felicitações (ex: Feliz Natal), spam ou confirmação de recebimento.
                 
-                Se for um elogio ou agradecimento, CLASSIFIQUE COMO 'Improdutivo'.
+                e redigir uma sugestão de resposta profissional em segundos.
 
                 Responda APENAS com este JSON cru (sem markdown):
                 {
