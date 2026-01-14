@@ -35,17 +35,28 @@ public class GroqService {
 
             Map<String, String> systemMessage = new HashMap<>();
             systemMessage.put("role", "system");
+
             systemMessage.put("content", """
-                Você é um classificador de emails via JSON.
-                Responda APENAS com o JSON cru, sem markdown (```json).
-                Chaves obrigatórias (todas minúsculas):
+                Atue como um classificador rigoroso de emails corporativos.
+                
+                REGRAS DE CLASSIFICAÇÃO:
+                1. 'Produtivo': APENAS se o email exigir uma ação técnica, suporte, dúvida, erro ou solicitação de status.
+                2. 'Improdutivo': Se for apenas agradecimento, elogio, felicitações (ex: Feliz Natal), spam ou confirmação de recebimento.
+                
+                Se for um elogio ou agradecimento, CLASSIFIQUE COMO 'Improdutivo'.
+
+                Responda APENAS com este JSON cru (sem markdown):
                 {
                     "classificacao": "Produtivo" ou "Improdutivo",
-                    "resumo": "Resumo curto",
-                    "resposta_sugerida": "Texto da resposta"
+                    "resumo": "Resumo em 5 palavras",
+                    "resposta_sugerida": "Resposta curta e polida"
                 }
                 """);
+
             messages.add(systemMessage);
+
+            body.put("temperature", 0.1);
+
 
             Map<String, String> userMessage = new HashMap<>();
             userMessage.put("role", "user");

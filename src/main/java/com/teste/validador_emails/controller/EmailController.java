@@ -2,8 +2,6 @@ package com.teste.validador_emails.controller;
 
 import com.teste.validador_emails.service.FileService;
 import com.teste.validador_emails.service.GroqService;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
